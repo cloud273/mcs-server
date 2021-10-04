@@ -1,0 +1,5553 @@
+openapi: 3.0.1
+info:
+  title: mcs api
+  description: list of main api
+  version: 1.0.0
+servers:
+- url: https://mcs.cloud273.com/app/api
+
+paths:
+  /admin:
+    get:
+      tags:
+      - admin/account
+      summary: Get admin account
+      operationId: getAdminAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminDetail'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+    post:
+      tags:
+      - admin/account
+      summary: Create admin account
+      operationId: adminCreateAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: fn
+        in: header
+        description: Firstname key
+        required: true
+        schema:
+          type: string
+          default: dung
+      - name: ln
+        in: header
+        description: Lastname key
+        required: true
+        schema:
+          type: string
+          default: nguyen
+      - name: bd
+        in: header
+        description: Birthday key
+        required: true
+        schema:
+          type: string
+          default: "27031984"
+      - name: ad
+        in: header
+        description: Address key
+        required: true
+        schema:
+          type: string
+          default: "@0605"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - username
+              - password
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/Username'
+                password:
+                  $ref: '#/components/schemas/Password'
+                language:
+                  $ref: '#/components/schemas/Language'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        409:
+          description: Existed
+        500:
+          description: Unknown
+    patch:
+      tags:
+      - admin/account
+      summary: Update admin account language
+      operationId: updateAdminAccountLanguage
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - language
+              type: object
+              properties:
+                language:
+                  $ref: '#/components/schemas/Language'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/clinic:
+    post:
+      tags:
+      - admin/clinic
+      summary: Create clinic
+      operationId: createClinicByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [clinic, user]
+              type: object
+              properties:
+                clinic:
+                  $ref: '#/components/schemas/ClinicCreate'
+                user:
+                  $ref: '#/components/schemas/ClinicUserCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        409:
+          description: Existed 
+        500:
+          description: Unknown
+    put:
+      tags:
+      - admin/clinic
+      summary: Update clinic
+      operationId: updateClinicByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClinicUpdateWithID'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+    get:
+      tags:
+      - admin/clinic
+      summary: Get clinic detail
+      operationId: getClinicByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      - name: id
+        in: query
+        description: clinicId
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicDetailWithCert'  
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/clinic/list:
+    get:
+      tags:
+      - admin/clinic
+      summary: Get list of clinic
+      operationId: getListClinicByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClinicBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/clinic/deactivate:  
+    patch:
+      tags:
+      - admin/clinic
+      summary: Deactivate clinic
+      operationId: deactivateClinicByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [id]
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+        required: true
+      responses:
+        200:
+          description: Deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/doctor:
+    post:
+      tags:
+      - admin/doctor
+      summary: Create doctor
+      operationId: createDoctorByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Clinic)
+        409:
+          description: Existed 
+        500:
+          description: Unknown
+    put:
+      tags:
+      - admin/doctor
+      summary: Update doctor
+      operationId: updateDoctorByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorUpdateWithID'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+    patch:
+      tags:
+      - admin/doctor
+      summary: Update partial doctor
+      operationId: updatePartialDoctorByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorPartialUpdateWithID'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+    get:
+      tags:
+      - admin/doctor
+      summary: Get doctor detail
+      operationId: getDoctorByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      - name: id
+        in: query
+        description: doctorId
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorDetailWithCert'  
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/doctor/list:
+    get:
+      tags:
+      - admin/doctor
+      summary: Get list of doctor
+      operationId: getListDoctorByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      - name: clinicId
+        in: query
+        description: clinicId
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoctorBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (clinic)
+        500:
+          description: Unknown
+  /admin/doctor/deactivate:  
+    patch:
+      tags:
+      - admin/doctor
+      summary: Deactivate doctor
+      operationId: deactivateDoctorByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [id]
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+        required: true
+      responses:
+        200:
+          description: Deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/clinic-certificate:
+    post:
+      tags:
+      - admin/clinic-certificate
+      summary: Create clinic certificate
+      operationId: createClinicCertificateByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClinicCertCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Clinic)
+        500:
+          description: Unknown
+    put:
+      tags:
+      - admin/clinic-certificate
+      summary: Update clinic certificate
+      operationId: updateClinicCertificateByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClinicCertUpdateWithID'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/clinic-certificate/deactivate:  
+    patch:
+      tags:
+      - admin/clinic-certificate
+      summary: Deactivate clinic certificate
+      operationId: deactivateClinicCertificateByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [id]
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+        required: true
+      responses:
+        200:
+          description: Deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/doctor-certificate:
+    post:
+      tags:
+      - admin/doctor-certificate
+      summary: Create doctor certificate
+      operationId: createDoctorCertificateByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorCertCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Doctor)
+        500:
+          description: Unknown
+    put:
+      tags:
+      - admin/doctor-certificate
+      summary: Update doctor certificate
+      operationId: updateDoctorCertificateByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorCertUpdateWithID'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/doctor-certificate/deactivate:  
+    patch:
+      tags:
+      - admin/doctor-certificate
+      summary: Deactivate doctor certificate
+      operationId: deactivateDoctorCertificateByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [id]
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+        required: true
+      responses:
+        200:
+          description: Deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/package:
+    post:
+      tags:
+      - admin/package
+      summary: Create package
+      operationId: createPackageByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PackageCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Doctor)
+        406:
+          description: Invalid specialty (specialty not in doctor specialties)
+        409:
+          description: Existed 
+        500:
+          description: Unknown
+    put:
+      tags:
+      - admin/package
+      summary: Update package
+      operationId: updatePackageByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PackageUpdateWithID'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        406:
+          description: Invalid specialty (specialty not in doctor specialties)
+        500:
+          description: Unknown
+  /admin/package/list:
+    get:
+      tags:
+      - admin/package
+      summary: Get list package of doctor 
+      operationId: getListPackageByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      - name: doctorId
+        in: query
+        description: doctorId
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (doctor)
+        500:
+          description: Unknown
+  /admin/package/deactivate:  
+    patch:
+      tags:
+      - admin/package
+      summary: Deactivate package
+      operationId: deactivatePackageByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [id]
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+        required: true
+      responses:
+        200:
+          description: Deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/schedule:
+    post:
+      tags:
+      - admin/schedule
+      summary: Create schedule
+      operationId: createScheduleByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Doctor | Package)
+        409:
+          description: Existed 
+        500:
+          description: Unknown
+    put:
+      tags:
+      - admin/schedule
+      summary: Update schedule
+      operationId: updateScheduleByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleUpdateWithID'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        409:
+          description: Existed 
+        500:
+          description: Unknown
+  /admin/schedule/list:
+    get:
+      tags:
+      - admin/schedule
+      summary: Get list schedule of package 
+      operationId: getListScheduleByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      - name: packageId
+        in: query
+        description: packageId
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Doctor | Package)
+        500:
+          description: Unknown
+  /admin/schedule/deactivate:  
+    patch:
+      tags:
+      - admin/schedule
+      summary: Deactivate schedule
+      operationId: deactivateScheduleByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [id]
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+        required: true
+      responses:
+        200:
+          description: Deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/appointment:
+    get:
+      tags:
+      - admin/appointment
+      summary: Get appointment
+      operationId: getAppointmentByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      - name: id
+        in: query
+        description: id
+        required: true
+        schema:
+          type: number
+          default: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentDetail'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /admin/appointment/list:
+    get:
+      tags:
+      - admin/appointment
+      summary: Get list of appointment
+      operationId: getListAppointmentByAdmin
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      - name: type
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "classic"
+          enum: ["classic", "telemed"]
+      - name: statusTypes
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "W2FjY2VwdGVkXQ=="
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2019-12-25T07%3A00%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-31T07%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /admin/appointment/reject:
+    patch:
+      tags:
+      - admin/appointment
+      summary: Reject an appointment
+      operationId: rejectAppointmentByAdmin
+      parameters:
+      - in: header
+        name: os
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.admin|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "admin_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+                note:
+                  type: string
+                  example: "Rejected by admin"
+                  default: "Rejected by admin"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        406:
+          description: Can not be rejected
+        500:
+          description: Unknown
+
+  /clinic/account:
+    get:
+      tags:
+      - clinic/account
+      summary: Get clinic account
+      operationId: getClinicAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicUserDetail'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /clinic:
+    get:
+      tags:
+      - clinic/information
+      summary: Get clinic information
+      operationId: getClinicByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicDetailWithCert'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /clinic/doctor/list:
+    get:
+      tags:
+      - clinic/information
+      summary: Get list of doctor
+      operationId: getListDoctorByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoctorBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /clinic/doctor:
+    get:
+      tags:
+      - clinic/information
+      summary: Get doctor
+      operationId: getDoctorByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      - name: id
+        in: query
+        description: doctorId
+        required: true
+        schema:
+          type: number
+          default: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorDetailWithCert'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /clinic/doctor/package/list:
+    get:
+      tags:
+      - clinic/information
+      summary: Get list of package of a doctor
+      operationId: getListPackageOfDoctorByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      - name: doctorId
+        in: query
+        description: doctorId
+        required: true
+        schema:
+          type: number
+          default: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found doctor
+        500:
+          description: Unknown
+  /clinic/doctor/working-time/list:
+    get:
+      tags:
+      - clinic/information
+      summary: Get list of working time of a doctor
+      operationId: getListWorkingTimeOfDoctorByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      - name: doctorId
+        in: query
+        description: doctorId
+        required: true
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2019-12-12T07%3A00%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-31T07%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkingTimeDetail'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found doctor
+        500:
+          description: Unknown
+  /clinic/doctor/package:
+    get:
+      tags:
+      - clinic/information
+      summary: Get package of doctor (include active schedule)
+      operationId: getPackageWithTimeOfDoctorByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      - name: id
+        in: query
+        description: packageId
+        required: true
+        schema:
+          type: number
+          default: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageDetailWithSchedule'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /clinic/doctor/working-day:
+    post:
+      tags:
+      - clinic/working-day
+      summary: Create/Update working day of doctor
+      operationId: createWorkingDayOfDoctorByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkingDayCreate'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Doctor | Package)
+        500:
+          description: Unknown
+  /clinic/appointment:
+    get:
+      tags:
+      - clinic/appointment
+      summary: Get appointment
+      operationId: getAppointmentByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      - name: id
+        in: query
+        description: id
+        required: true
+        schema:
+          type: number
+          default: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentDetail'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /clinic/appointment/list:
+    get:
+      tags:
+      - clinic/appointment
+      summary: Get list of appointment
+      operationId: getListAppointmentByClinic
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      - name: type
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "classic"
+          enum: ["classic", "telemed"]
+      - name: statusTypes
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "W2FjY2VwdGVkXQ=="
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2019-12-25T07%3A00%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-31T07%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /clinic/appointment/accept:
+    patch:
+      tags:
+      - clinic/appointment
+      summary: Accept an appointment
+      operationId: acceptAppointmentByClinic
+      parameters:
+      - in: header
+        name: os
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+                note:
+                  type: string
+                  example: "Rejected by clinic"
+                  default: "Rejected by clinic"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        406:
+          description: Can not be accepted
+        500:
+          description: Unknown 
+  /clinic/appointment/reject:
+    patch:
+      tags:
+      - clinic/appointment
+      summary: Reject an appointment
+      operationId: rejectAppointmentByClinic
+      parameters:
+      - in: header
+        name: os
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.clinic|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "clinic_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+                note:
+                  type: string
+                  example: "Rejected by clinic"
+                  default: "Rejected by clinic"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        406:
+          description: Can not be rejected
+        500:
+          description: Unknown
+  /doctor:
+    get:
+      tags:
+      - doctor/information
+      summary: Get doctor account
+      operationId: getDoctorAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorDetailWithCert'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /doctor/info:
+    get:
+      tags:
+      - doctor/information
+      summary: Get doctor, clinic information
+      operationId: getDoctorClinicCountInfo
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  doctor:
+                      $ref: '#/components/schemas/DoctorDetailWithCert'
+                  clinic:
+                      $ref: '#/components/schemas/ClinicDetailWithCert'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /doctor/clinic:
+    get:
+      tags:
+      - doctor/information
+      summary: Get clinic information
+      operationId: getClinicByDoctor
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicDetailWithCert'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /doctor/package/list:
+    get:
+      tags:
+      - doctor/information
+      summary: Get list package of doctor
+      operationId: getListPackageByDoctor
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageBasic'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /doctor/working-time/list:
+    get:
+      tags:
+      - doctor/information
+      summary: Get list working time of doctor
+      operationId: getListWorkingTimeByDoctor
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2019-12-12T07%3A00%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-31T07%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkingTimeDetail'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /doctor/package:
+    get:
+      tags:
+      - doctor/information
+      summary: Get package (include active schedule)
+      operationId: getPackageByDoctor
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      - name: id
+        in: query
+        description: packageId
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageDetailWithSchedule'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /doctor/appointment:
+    get:
+      tags:
+      - doctor/appointment
+      summary: Get appointment
+      operationId: getAppointmentByDoctor
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      - name: id
+        in: query
+        description: id
+        required: true
+        schema:
+          type: number
+          default: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentDetail'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /doctor/appointment/list:
+    get:
+      tags:
+      - doctor/appointment
+      summary: Get list of appointment
+      operationId: getListAppointmentByDoctor
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      - name: type
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "classic"
+          enum: ["classic", "telemed"]
+      - name: statusTypes
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "W2FjY2VwdGVkXQ=="
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2019-12-25T07%3A00%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-31T07%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /doctor/appointment/begin:
+    patch:
+      tags:
+      - doctor/appointment
+      summary: Begin an appointment
+      operationId: beginAppointmentByDoctor
+      parameters:
+      - in: header
+        name: os
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+                note:
+                  type: string
+                  example: "Begin by doctor"
+                  default: "Begin by doctor"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        406:
+          description: Can not be begun
+        500:
+          description: Unknown
+  /doctor/appointment/finish:
+    patch:
+      tags:
+      - doctor/appointment
+      summary: Finish an appointment
+      operationId: finishAppointmentByDoctor
+      parameters:
+      - in: header
+        name: os
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.doctor|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "doctor_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+                note:
+                  type: string
+                  example: "Finished by doctor"
+                  default: "Finished by doctor"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        406:
+          description: Can not be finished
+        500:
+          description: Unknown
+          
+  /patient:
+    get:
+      tags:
+      - patient/account
+      summary: Get patient account
+      operationId: getPatientAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDetail'   
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+    post:
+      tags:
+      - patient/account
+      summary: Create patient account
+      operationId: patientCreateAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        401:
+          description: Invalid phone number or email
+        403:
+          description: Invalid token
+        409:
+          description: Existed
+        500:
+          description: Unknown
+    put:
+      tags:
+      - patient/account
+      summary: Update patient account
+      operationId: updatePatientAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientUpdate'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+    patch:
+      tags:
+      - patient/account
+      summary: Update partial patient account (language or image)
+      operationId: updatePartialPatientAccount
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  $ref: '#/components/schemas/ImageUrl'
+                language:
+                  $ref: '#/components/schemas/Language'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /patient/update-username-request:
+    patch:
+      tags:
+      - patient/account
+      summary: Update username request
+      operationId: updatePatientUsernameRequest
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: language
+        in: header
+        description: Language
+        required: true
+        schema:
+          type: string
+          default: vi
+          enum:
+            - vi
+            - en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - password
+              - username
+              type: object
+              properties:
+                password:
+                  $ref: '#/components/schemas/Password'
+                username:
+                  $ref: '#/components/schemas/Username'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodeMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        409:
+          description: Email existed
+        500:
+          description: Unknown
+  /patient/update-username:
+    patch:
+      tags:
+      - patient/account
+      summary: Update email
+      operationId: updatePatientEmail
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - code
+              - username
+              type: object
+              properties:
+                code:
+                  $ref: '#/components/schemas/Code'
+                username:
+                  $ref: '#/components/schemas/Username'
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found (Invalid Code)
+        409:
+          description: Email existed
+        500:
+          description: Unknown
+  /patient/health:
+    get:
+      tags:
+      - patient/health
+      summary: Get health profile
+      operationId: getHealthProfileByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allergies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AllergyDetail'
+                  surgeries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SurgeryDetail'
+                  medications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MedicationDetail'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /patient/health/allergy:
+    post:
+      tags:
+      - patient/health
+      summary: Create allergy
+      operationId: createAllergy
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllergyCreate' 
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+    put:
+      tags:
+      - patient/health
+      summary: Update allergy
+      operationId: updateAllergy
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllergyUpdateWithID' 
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+    delete:
+      tags:
+      - patient/health
+      summary: Delete allergy
+      operationId: deleteAllergy
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: id
+        in: query
+        description: Id
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedMessage'  
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /patient/health/surgery:
+    post:
+      tags:
+      - patient/health
+      summary: Create surgery
+      operationId: createSurgery
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurgeryCreate' 
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+    put:
+      tags:
+      - patient/health
+      summary: Update surgery
+      operationId: updateSurgery
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurgeryUpdateWithID' 
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+    delete:
+      tags:
+      - patient/health
+      summary: Delete surgery
+      operationId: deleteSurgery
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: id
+        in: query
+        description: Id
+        required: true
+        schema:
+          type: integer
+          default: 1
+          example: 1
+      responses:
+        200:
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedMessage' 
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /patient/health/medication:
+    put:
+      tags:
+      - patient/health
+      summary: Update medication
+      operationId: updateMedication
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicationUpdateWithID' 
+        required: true
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /patient/booking/specialty/list:
+    get:
+      tags:
+      - patient/booking
+      summary: Get list specialty
+      operationId: getListActiveSpecialtyByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: symptoms
+        in: query
+        description: symptoms
+        required: true
+        schema:
+          type: string
+          default: "base64 of json serialize from array of symptom"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SpecialtyConfig'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /patient/booking/doctor/list:
+    get:
+      tags:
+      - patient/booking
+      summary: Get list doctor
+      operationId: getListActiveDoctorByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: specialty
+        in: query
+        description: specialty
+        required: true
+        schema:
+          type: string
+          default: "primary"
+          enum: ["primary", "cardiology"]
+      - name: type
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "classic"
+          enum: ["classic", "telemed"]
+      - name: longitude
+        in: query
+        description: longitude
+        schema:
+          type: number
+          format: float
+          default: 10.001
+      - name: latitude
+        in: query
+        description: latitude
+        schema:
+          type: number
+          format: float
+          default: 10.001
+      - name: offsetName
+        in: query
+        description: offsetName
+        schema:
+          type: string
+          default: name
+      - name: limit
+        in: query
+        description: limit
+        schema:
+          type: number
+          default: 50
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoctorBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /patient/booking/doctor:
+    get:
+      tags:
+      - patient/booking
+      summary: Get doctor
+      operationId: getActiveDoctorByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: id
+        in: query
+        description: id
+        required: true
+        schema:
+          type: number
+          default: 1
+      - name: specialty
+        in: query
+        description: specialty
+        required: true
+        schema:
+          type: string
+          default: "primary"
+          enum: ["primary", "cardiology"]
+      - name: type
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "classic"
+          enum: ["classic", "telemed"]
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoctorDetailWithCertAndPackage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /patient/booking/working-time/list:
+    get:
+      tags:
+      - patient/booking
+      summary: Get working time of package
+      operationId: getWorkingTimeByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: packageId
+        in: query
+        description: packageId
+        required: true
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2019-12-12T07%3A00%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-31T07%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkingTimeDetail'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /patient/booking/time/list:
+    get:
+      tags:
+      - patient/booking
+      summary: Get booking time of package
+      operationId: getBookingTimeByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: packageId
+        in: query
+        description: packageId
+        required: true
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2020-01-01T07%3A30%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-01T12%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DateTime'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /patient/appointment:
+    post:
+      tags:
+      - patient/appointment
+      summary: Create appointment
+      operationId: createAppointmentByPatient
+      parameters:
+      - in: header
+        name: os
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentCreate'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWithIDMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        406:
+          description: Bad data or data changed
+        500:
+          description: Unknown
+    get:
+      tags:
+      - patient/appointment
+      summary: Get appointment
+      operationId: getAppointmentByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: id
+        in: query
+        description: id
+        required: true
+        schema:
+          type: number
+          default: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentDetail'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /patient/appointment/list:
+    get:
+      tags:
+      - patient/appointment
+      summary: Get list of appointment
+      operationId: getListAppointmentByPatient
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      - name: type
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "classic"
+          enum: ["classic", "telemed"]
+      - name: statusTypes
+        in: query
+        description: type
+        required: true
+        schema:
+          type: string
+          default: "W2FjY2VwdGVkXQ=="
+      - name: from
+        in: query
+        description: from
+        required: true
+        schema:
+          type: string
+          default: "2019-12-25T07%3A00%3A00%2B07%3A00"
+      - name: to
+        in: query
+        description: to
+        required: true
+        schema:
+          type: string
+          default: "2020-01-31T07%3A00%3A00%2B07%3A00"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentBasic'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        500:
+          description: Unknown
+  /patient/appointment/cancel:
+    patch:
+      tags:
+      - patient/appointment
+      summary: Cancel an appointment
+      operationId: cancelAppointmentByPatient
+      parameters:
+      - in: header
+        name: os
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ID'
+                note:
+                  type: string
+                  example: "Change my mind"
+                  default: "Change my mind"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        400:
+          description: Bad request
+        403:
+          description: Invalid token
+        404:
+          description: Not found
+        406:
+          description: Can not be canceled
+        500:
+          description: Unknown
+
+  /config:
+    get:
+      tags:
+      - application/config
+      summary: Get config
+      operationId: getConfig
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  countries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Country'
+                  specialties:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyConfig'
+                  reasons:
+                    type: object
+                    $ref: '#/components/schemas/Reason'
+                  appointment:
+                    type: object
+                    properties:
+                      acceptable: 
+                        type: number
+                        example: -21600
+                        default: -21600
+                      cancelable: 
+                        type: number
+                        example: -14400
+                        default: -14400
+                      rejectable: 
+                        type: number
+                        example: -14400
+                        default: -14400
+                      beginable: 
+                        type: object
+                        properties:
+                          from:
+                            type: number
+                            example: -14400
+                            default: -14400
+                          to:
+                            type: number
+                            example: 14400
+                            default: 14400
+                      finishable: 
+                        type: number
+                        example: 28800
+                        default: 28800
+        400:
+          description: Bad request
+        500:
+          description: Unknown
+  /config/reasons:
+    get:
+      tags:
+      - application/config
+      summary: Get reasons cancel/reject appointment
+      operationId: getReasons
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Reason'
+        400:
+          description: Bad request
+        500:
+          description: Unknown
+  /config/countries:
+    get:
+      tags:
+      - application/config
+      summary: Get country config
+      operationId: getCountryConfig
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+        400:
+          description: Bad request
+        500:
+          description: Unknown
+  /config/specialties:
+    get:
+      tags:
+      - application/config
+      summary: Get specialty config
+      operationId: getSpecialtyConfig
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SpecialtyConfig'
+        400:
+          description: Bad request
+        500:
+          description: Unknown
+  /upload/image:
+    post:
+      tags:
+      - application/upload
+      summary: Upload an image
+      operationId: uploadImage
+      parameters:
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+            encoding:
+              image: 
+                contentType: image/png, image/jpeg
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  image:
+                    type: string
+                    example: image.png
+                    default: image.png
+        400:
+          description: Bad request
+        500:
+          description: Unknown
+
+components:
+  schemas:
+    Line:
+      maxLength: 512
+      minLength: 2
+      type: string
+      example: "29 Binh Phu P10 Q6"
+      default: "29 Binh Phu P10 Q6"
+    AppBundle:
+      type: string
+      example: com.cloud273.patient
+      default: com.cloud273.patient
+      enum: [com.cloud273.patient, com.cloud273.doctor, com.cloud273.clinic, com.cloud273.admin]
+    Dob:
+      type: string
+      format: yyyy-MM-dd
+      example: "2000-01-01"
+      default: "2000-01-01"
+    Bool:
+      type: boolean
+      example: true
+      default: true
+    CityCode:
+      maxLength: 12
+      type: string
+      example: "VNSGO001"
+      default: "VNSGO001"
+    ClinicCertType:
+      type: string
+      example: working
+      default: working
+      enum: [working, other]
+    Code:
+      maxLength: 8
+      type: string
+      example: "123456"
+      default: "123456"
+      description: Code used to activate or reset password
+    CountryCode:
+      maxLength: 2
+      type: string
+      example: "VN"
+      default:  "VN"
+      enum: ["VN"]
+    CurrencyUnit:
+      type: string
+      example: vnd
+      default: vnd
+      enum: [vnd, usd]
+    Date:
+      type: string
+      format: yyyy-MM-dd
+      example: "2020-01-01"
+      default: "2020-01-01"
+    DateTime:
+      type: string
+      format: yyyy-MM-ddTHH:mm:ssZ
+      example: "2020-01-01T08:00:00+07:00"
+      default: "2020-01-01T08:00:00+07:00"
+    DeviceOS:
+      type: string
+      example: ios
+      default: ios
+      enum: [ios, android, chrome]
+    DoctorCertType:
+      type: string
+      example: working
+      default: working
+      enum: [personal, working, degree, other]
+    Email:
+      maxLength: 128
+      type: string
+      example: "nglequduph@gmail.com"
+      default: "nglequduph@gmail.com"
+    Firstname:
+      maxLength: 128
+      minLength: 2
+      type: string
+      example: "Dung"
+      default: "Dung"
+    Gender:
+      type: string
+      example: male
+      default: male
+      enum: [male, female]
+    ID:
+      type: integer
+      format: int64
+      example: 1
+      default: 1
+    ImageUrl:
+      maxLength: 128
+      minLength: 4
+      type: string
+      example: https://cloud273.com/mcs/resource/image.png
+      default: https://cloud273.com/mcs/resource/image.png
+    Language:
+      type: string
+      example: vi
+      default: vi
+      enum: [vi, en]
+    Lastname:
+      maxLength: 128
+      type: string
+      example: "Nguyen"
+      default: "Nguyen"
+    LongLait:
+      type: number
+      format: float
+      example: 10.001
+      default: 10.001
+    MedicationType:
+      type: string
+      example: highBP
+      default: highBP
+      enum: [highBP, highCholesterol, pregnant, cancer]
+    Mobile:
+      maxLength: 16
+      type: string
+      example: "+84933270384"
+      default: "+84933270384"
+    Description:
+      maxLength: 1000
+      type: string
+      example: "Description"
+      default: "Description"
+    Number:
+      type: number
+      example: 10
+      default: 10
+    OtherDate:
+      type: string
+      format: yyyy-MM-dd
+      example: "2020-01-31"
+      default: "2020-01-31"
+    OtherTime:
+      type: string
+      format: HH:mm:ss
+      example: "12:00:00"
+      default: "12:00:00"
+    OtherDateTime:
+      type: string
+      format: yyyy-MM-ddTHH:mm:ssZ
+      example: "2020-01-31T12:00:00+07:00"
+      default: "2020-01-31T12:00:00+07:00"
+    PackageType:
+      type: string
+      example: "classic"
+      default: "classic"
+      enum: ["classic", "telemed"]
+    Password:
+      minLength: 6
+      maxLength: 32
+      type: string
+      example: "111111"
+      default: "111111"
+    Phone:
+      maxLength: 16
+      type: string
+      example: "+84933270384"
+      default: "+84933270384" 
+      description: "Phone or mobile"
+    SpecialtyCode:
+      type: string
+      example: "primary"
+      default: "primary"
+      enum: ["primary", "cardiology"]
+    StateCode:
+      maxLength: 6
+      type: string
+      example: "VNSGO"
+      default:  "VNSGO"
+      enum: ["VNSGO"]
+    Time:
+      type: string
+      format: HH:mm:ss
+      example: "07:30:00"
+      default: "07:30:00"
+    Timezone:
+      type: string
+      example: "+07:00"
+      default: "+07:00"
+    Trilian:
+      type: string
+      example: yes
+      default: yes
+      enum: [yes, no, unknown]
+    Username:
+      maxLength: 128
+      type: string
+      example: "nglequduph@gmail.com"
+      default: "nglequduph@gmail.com"
+      description: "Phone or email"
+    VisitTime:
+      type: number
+      example: 600
+      default: 600
+     
+    
+    CreatedMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: created
+          default: created
+    CreatedWithIDMessage:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          default: 1
+    CodeMessage:
+      type: object
+      required: [code]
+      properties:
+        code:
+          type: string
+          example: email
+          default: email
+          enum: [email, sms]
+    CodePhone:
+      type: object
+      required: [code]
+      properties:
+        code:
+          type: string
+          example: sms
+          default: sms
+          enum: [email, sms]
+    DeactivatedMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: deactivated
+          default: deactivated
+    DeletedMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: deleted
+          default: deleted
+    SuccessMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: successful
+          default: successful
+    UpdatedMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: updated
+          default: updated  
+    ValueMessage:
+      type: object
+      required: [id]
+      properties:
+        value:
+          type: integer
+          format: int64
+          example: 1
+          default: 1    
+          
+    Address:
+      type: object
+      required: [country, state, city, line]
+      properties:
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        state:
+          $ref: '#/components/schemas/StateCode'
+        city:
+          $ref: '#/components/schemas/CityCode'
+        line:
+          $ref: '#/components/schemas/Line'
+        longitude:
+          $ref: '#/components/schemas/LongLait'
+        latitude:
+          $ref: '#/components/schemas/LongLait'
+    Certificate:
+      type: object
+      required: [code, name, issuer, issueDate, image]
+      properties:
+        code:
+          type: string
+          minLength: 6
+          maxLength: 32
+          example: "100000"
+          default: "100000"
+        name:
+          type: string
+          minLength: 6
+          maxLength: 64
+          example: Certificate of
+          default: Certificate of
+        issuer:
+          type: string
+          minLength: 2
+          maxLength: 64
+          example: SYT HCM
+          default: SYT HCM
+        issueDate:
+          $ref: '#/components/schemas/Date'
+        expDate:
+          $ref: '#/components/schemas/OtherDate'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+    DateRange:
+      type: object
+      required: [from, to]
+      properties:
+        from:
+          $ref: '#/components/schemas/Date'
+        to:
+          $ref: '#/components/schemas/OtherDate'
+    Price:
+      type: object
+      required: [amount, currency]
+      properties:
+        amount:
+          $ref: '#/components/schemas/Number'
+        currency:
+          $ref: '#/components/schemas/CurrencyUnit'
+    Profile:
+      type: object
+      required: [firstname, lastname, gender, dob]
+      properties:
+        firstname:
+          $ref: '#/components/schemas/Firstname'
+        lastname:
+          $ref: '#/components/schemas/Lastname'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        dob:
+          $ref: '#/components/schemas/Dob'      
+    TimeRange:
+      type: object
+      required: [from, to]
+      properties:
+        from:
+          $ref: '#/components/schemas/Time' 
+        to:
+          $ref: '#/components/schemas/OtherTime' 
+    
+    City:
+      type: object
+      required: [code, name]
+      properties:
+        code:
+          $ref: '#/components/schemas/CityCode'
+        name:
+          $ref: '#/components/schemas/LocalizeText'
+    Country:
+      type: object
+      required: [code, name, state]
+      properties:
+        code:
+          $ref: '#/components/schemas/CountryCode'
+        name:
+          $ref: '#/components/schemas/LocalizeText'
+        state:
+          type: array
+          items:
+            $ref: '#/components/schemas/State'
+    Value:
+      type: object
+      required: [code, name]
+      properties:
+        code:
+          $ref: '#/components/schemas/PackageType'
+        name:
+          $ref: '#/components/schemas/LocalizeText'
+    Reason:
+      type: object
+      required: [code, name]
+      properties:
+        patientCancel:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+        clinicReject:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+        systemReject:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'   
+    SpecialtyConfig:
+      type: object
+      required: [code, image, name]
+      properties:
+        code:
+          $ref: '#/components/schemas/SpecialtyCode'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+        name:
+          $ref: '#/components/schemas/LocalizeText'
+    State:
+      type: object
+      required: [code, name, city]
+      properties:
+        code:
+          $ref: '#/components/schemas/StateCode'
+        name:
+          $ref: '#/components/schemas/LocalizeText'
+        city:
+          type: array
+          items:
+            $ref: '#/components/schemas/City'
+    LocalizeText:
+      type: object
+      required: [vi, en]
+      properties:
+        vi:
+          type: string
+          example: vietnamese text
+          default: vietnamese text 
+        en:
+          type: string
+          example: english text
+          default: english text 
+
+    AdminCreate:
+      type: object
+      required: [username, password, language]
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+        username:
+          $ref: '#/components/schemas/Username'
+        password:
+          $ref: '#/components/schemas/Password'
+    AdminUpdate:
+      type: object
+    AdminBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+    AdminDetail:
+      allOf:
+        - $ref: '#/components/schemas/AdminBasic'
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+        username:
+          $ref: '#/components/schemas/Username'
+    
+    AllergyCreate:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          example: "Allergy"
+          default: "Allergy"
+        description:
+          $ref: '#/components/schemas/Description'
+    AllergyUpdateWithID:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          example: "Allergy"
+          default: "Allergy"
+        description:
+          $ref: '#/components/schemas/Description'
+    AllergyBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          example: "Allergy"
+          default: "Allergy"
+        description:
+          $ref: '#/components/schemas/Description'
+    AllergyDetail:
+      allOf:
+        - $ref: '#/components/schemas/AllergyBasic'
+
+    AppointmentCreate:
+      type: object
+      required: [name]
+      properties:
+        begin:
+          $ref: '#/components/schemas/DateTime'
+        specialty:
+          $ref: '#/components/schemas/SpecialtyCode'
+        type:
+          $ref: '#/components/schemas/PackageType'
+        price:
+          $ref: '#/components/schemas/Price'
+        visitTime:
+          $ref: '#/components/schemas/VisitTime'
+        symptoms:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/SymptomCreate'
+        allergies:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/AllergyCreate'
+        surgeries:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/SurgeryCreate'
+        medications:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/MedicationCreate'
+        packageId:
+          $ref: '#/components/schemas/ID'
+    AppointmentBasic:
+      allOf:
+        - $ref: '#/components/schemas/AppointmentCreate'
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/Number'
+        code:
+          type: string
+          example: "10567345"
+          default: "10567345"
+        description:
+          $ref: '#/components/schemas/Description'
+    AppointmentDetail:
+      allOf:
+        - $ref: '#/components/schemas/AppointmentBasic'
+
+    ClinicCreate:
+      type: object
+      required: [name, email, phone, workPhone, address, image]
+      properties:
+        name:
+          type: string
+          minLength: 6
+          maxLength: 64
+          example: Clinic name
+          default: Clinic name
+        email:
+          $ref: '#/components/schemas/Email'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        workPhone:
+          $ref: '#/components/schemas/Phone'
+        address:
+          $ref: '#/components/schemas/Address'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+        description:
+          $ref: '#/components/schemas/Description'
+    ClinicUpdateWithID:
+      allOf:
+        - $ref: '#/components/schemas/ClinicCreate'
+      type: object
+      required: [id]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+    ClinicBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          minLength: 6
+          maxLength: 64
+          example: Clinic name
+          default: Clinic name
+    ClinicDetail:
+      allOf:
+        - $ref: '#/components/schemas/ClinicBasic'
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        workPhone:
+          $ref: '#/components/schemas/Phone'
+        address:
+          $ref: '#/components/schemas/Address'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+        description:
+          $ref: '#/components/schemas/Description'
+        deactivated:
+          $ref: '#/components/schemas/Bool'
+    ClinicDetailWithCert:
+      allOf:
+        - $ref: '#/components/schemas/ClinicDetail'
+      type: object
+      properties:
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClinicCertDetail'
+            
+    ClinicCertCreate:
+      allOf:
+        - $ref: '#/components/schemas/Certificate'
+      type: object
+      required: [type, clinicId]
+      properties:
+        type:
+          $ref: '#/components/schemas/ClinicCertType'
+        clinicId:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    ClinicCertUpdateWithID:
+      allOf:
+        - $ref: '#/components/schemas/Certificate'
+      type: object
+      required: [type, id]
+      properties:
+        type:
+          $ref: '#/components/schemas/ClinicCertType'
+        id:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    ClinicCertBasic:
+      allOf:
+        - $ref: '#/components/schemas/ClinicCertUpdateWithID'
+    ClinicCertDetail:
+      allOf:
+        - $ref: '#/components/schemas/ClinicCertBasic'
+        
+    ClinicUserCreate:
+      type: object
+      required: [username, password, language]
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+        username:
+          $ref: '#/components/schemas/Username'
+        password:
+          $ref: '#/components/schemas/Password'
+        description:
+          $ref: '#/components/schemas/Description'
+    ClinicUserBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        username:
+          $ref: '#/components/schemas/Username'
+    ClinicUserDetail:
+      allOf:
+        - $ref: '#/components/schemas/ClinicUserBasic'
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+        description:
+          $ref: '#/components/schemas/Description'
+         
+    DeviceSave:
+      type: object
+      required: [info, os, type, production, topic]
+      properties:
+        info:
+          type: string
+          minLength: 2
+          maxLength: 256
+          default: "Iphone 6 Plus / IOS 13.2"
+          example: "Iphone 6 Plus / IOS 13.2"
+        token:
+          type: string
+          minLength: 8
+          maxLength: 256
+          default: "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
+          example: "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
+        os:
+          $ref: '#/components/schemas/DeviceOS'
+        topic:
+          $ref: '#/components/schemas/AppBundle'
+        production:
+          $ref: '#/components/schemas/Bool'
+        description:
+          $ref: '#/components/schemas/Description'
+    DeviceDetail:
+      allOf:
+        - $ref: '#/components/schemas/DeviceSave'
+              
+    DoctorCreate:
+      type: object
+      required: [username, password, profile, specialties, language, image, title, office, biography, startWork, timezone]
+      properties:
+        username:
+          $ref: '#/components/schemas/Username'
+        password:
+          $ref: '#/components/schemas/Password'
+        language:
+          $ref: '#/components/schemas/Language'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+        profile:
+          $ref: '#/components/schemas/Profile'
+        specialties:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/SpecialtyCode'
+        title:
+          type: string
+          maxLength: 32
+          default: Dr
+          example: Dr
+        office:
+          type: string
+          maxLength: 256
+          default: CEO Hospital
+          example: CEO Hospital
+        biography:
+          type: string
+          maxLength: 10000
+          default: Something about doctor's biography
+          example: Something about doctor's biography
+        startWork:
+          $ref: '#/components/schemas/Date'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        clinicId:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    DoctorUpdateWithID:
+      type: object
+      required: [id, profile, specialties, image, title, office, biography, startWork]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+        profile:
+          $ref: '#/components/schemas/Profile'
+        specialties:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/SpecialtyCode'
+        title:
+          type: string
+          maxLength: 32
+          default: Doctor
+          example: Doctor
+        office:
+          type: string
+          maxLength: 256
+          default: CEO Hospital Updated
+          example: CEO Hospital Updated
+        biography:
+          type: string
+          maxLength: 10000
+          default: Something about doctor's biography Updated
+          example: Something about doctor's biography Updated
+        startWork:
+          $ref: '#/components/schemas/Date'
+        description:
+          $ref: '#/components/schemas/Description'
+    DoctorPartialUpdateWithID:
+      type: object
+      required: [id, language, timezone]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        language:
+          $ref: '#/components/schemas/Language'
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+    DoctorBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+        profile:
+          $ref: '#/components/schemas/Profile'
+        specialties:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpecialtyCode'
+        title:
+          type: string
+          maxLength: 32
+          default: Dr
+          example: Dr
+        office:
+          type: string
+          maxLength: 256
+          default: CEO Hospital
+          example: CEO Hospital
+        startWork:
+          $ref: '#/components/schemas/Date'
+    DoctorDetail:
+      allOf:
+        - $ref: '#/components/schemas/DoctorBasic'
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+        username:
+          $ref: '#/components/schemas/Username'
+        specialties:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpecialtyCode'
+        biography:
+          type: string
+          maxLength: 10000
+          default: Something about doctor's biography
+          example: Something about doctor's biography
+        timezone:
+          $ref: '#/components/schemas/Timezone'
+        description:
+          $ref: '#/components/schemas/Description'
+        deactivated:
+          $ref: '#/components/schemas/Bool'
+    DoctorDetailWithCert:
+      allOf:
+        - $ref: '#/components/schemas/DoctorDetail'
+      type: object
+      properties:
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/DoctorCertDetail'
+    DoctorDetailWithCertAndPackage:
+      allOf:
+        - $ref: '#/components/schemas/DoctorDetailWithCert'
+      type: object
+      properties:
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageDetail'
+
+    DoctorCertCreate:
+      allOf:
+        - $ref: '#/components/schemas/Certificate'
+      type: object
+      required: [type, doctorId]
+      properties:
+        type:
+          $ref: '#/components/schemas/DoctorCertType'
+        doctorId:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    DoctorCertUpdateWithID:
+      allOf:
+        - $ref: '#/components/schemas/Certificate'
+      type: object
+      required: [type, id]
+      properties:
+        type:
+          $ref: '#/components/schemas/DoctorCertType'
+        id:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    DoctorCertBasic:
+      allOf:
+        - $ref: '#/components/schemas/DoctorCertUpdateWithID'
+    DoctorCertDetail:
+      allOf:
+        - $ref: '#/components/schemas/DoctorCertBasic'
+        
+    MedicationCreate:
+      type: object
+      required: [name, value]
+      properties:
+        name:
+          $ref: '#/components/schemas/MedicationType'
+        value:
+          $ref: '#/components/schemas/Trilian'
+        description:
+          $ref: '#/components/schemas/Description'
+    MedicationUpdateWithID:
+      type: object
+      required: [id, value]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        value:
+          $ref: '#/components/schemas/Trilian'
+        description:
+          $ref: '#/components/schemas/Description'
+    MedicationBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          $ref: '#/components/schemas/MedicationType'
+        value:
+          $ref: '#/components/schemas/Trilian'
+    MedicationDetail:
+      allOf:
+        - $ref: '#/components/schemas/MedicationBasic'
+      type: object
+      properties:
+        description:
+          $ref: '#/components/schemas/Description'
+    
+    PackageCreate:
+      type: object
+      required: [specialty, type, price, visitTime, doctorId]
+      properties:
+        specialty:
+          $ref: '#/components/schemas/SpecialtyCode'
+        type:
+          $ref: '#/components/schemas/PackageType'
+        price:
+          $ref: '#/components/schemas/Price'
+        visitTime:
+          $ref: '#/components/schemas/VisitTime'
+        description:
+              $ref: '#/components/schemas/Description'
+        doctorId:
+          $ref: '#/components/schemas/ID'
+    PackageUpdateWithID:
+      type: object
+      required: [id, price, visitTime]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        price:
+          $ref: '#/components/schemas/Price'
+        visitTime:
+          $ref: '#/components/schemas/VisitTime'
+        description:
+          $ref: '#/components/schemas/Description'
+    PackageBasic:
+      type: object
+      required: [id, specialty, type, price, visitTime]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        specialty:
+          $ref: '#/components/schemas/SpecialtyCode'
+        type:
+          $ref: '#/components/schemas/PackageType'
+        price:
+          $ref: '#/components/schemas/Price'
+        visitTime:
+          $ref: '#/components/schemas/VisitTime'
+        description:
+          $ref: '#/components/schemas/Description'
+    PackageDetail:
+      allOf:
+        - $ref: '#/components/schemas/PackageBasic'
+    PackageDetailWithSchedule:
+      allOf:
+        - $ref: '#/components/schemas/PackageDetail'
+      type: object
+      properties:
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleDetail'
+    PackageDetailWithScheduleWorking:
+      allOf:
+        - $ref: '#/components/schemas/PackageDetailWithSchedule'
+      type: object
+      properties:
+        workingDays:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkingDayDetail'
+              
+    PatientCreate:
+      type: object
+      required: [username, profile, address, language]
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+        username:
+          $ref: '#/components/schemas/Username'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+        profile:
+          $ref: '#/components/schemas/Profile'
+        address:
+          $ref: '#/components/schemas/Address'
+        description:
+          $ref: '#/components/schemas/Description'
+    PatientUpdate:
+      type: object
+      required: [profile, address]
+      properties:
+        profile:
+          $ref: '#/components/schemas/Profile'
+        address:
+          $ref: '#/components/schemas/Address'
+        description:
+          $ref: '#/components/schemas/Description'
+    PatientBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        image:
+          $ref: '#/components/schemas/ImageUrl'
+    PatientDetail:
+      allOf:
+        - $ref: '#/components/schemas/PatientBasic'
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+        username:
+          $ref: '#/components/schemas/Username'
+        profile:
+          $ref: '#/components/schemas/Profile'
+        address:
+          $ref: '#/components/schemas/Address'
+        description:
+          $ref: '#/components/schemas/Description'
+        deactivated:
+          $ref: '#/components/schemas/Bool'
+        allergies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergyDetail'
+        surgeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurgeryDetail'
+        medications:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicationDetail'
+    
+    ScheduleBase:
+      type: object
+      required: [duration, monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+      properties:
+        duration:
+          $ref: '#/components/schemas/DateRange'
+        monday:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+        tuesday:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+        wednesday:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+        thursday:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+        friday:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+        saturday:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+        sunday:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+    ScheduleCreate:
+      allOf:
+        - $ref: '#/components/schemas/ScheduleBase'
+      type: object
+      required: [packageId]
+      properties:
+        packageId:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    ScheduleUpdateWithID:
+      allOf:
+        - $ref: '#/components/schemas/ScheduleBase'
+      type: object
+      required: [id]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    ScheduleBasic:
+      allOf:
+        - $ref: '#/components/schemas/ScheduleBase'
+      type: object
+      required: [id]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    ScheduleDetail:
+      allOf:
+        - $ref: '#/components/schemas/ScheduleBasic'
+          
+    SurgeryCreate:
+      type: object
+      required: [name, date]
+      properties:
+        name:
+          type: string
+          example: "Surgery"
+          default: "Surgery"
+        date:
+          type: string
+          format: yyyy-MM-dd
+          example: "2018-10-30"
+          default: "2018-10-30"
+        description:
+          $ref: '#/components/schemas/Description'
+    SurgeryUpdateWithID:
+      type: object
+      required: [id, name, date]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          example: "Surgery"
+          default: "Surgery"
+        date:
+          type: string
+          format: yyyy-MM-dd
+          example: "2018-10-23"
+          default: "2018-10-23"
+        description:
+          $ref: '#/components/schemas/Description'
+    SurgeryBasic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          example: "Surgery"
+          default: "Surgery"
+        date:
+          type: string
+          format: yyyy-MM-dd
+          example: "2018-10-23"
+          default: "2018-10-23"
+        description:
+          $ref: '#/components/schemas/Description'
+    SurgeryDetail:
+      allOf:
+        - $ref: '#/components/schemas/SurgeryBasic'
+    
+    SymptomCreate:
+      type: object
+      required: [name, note]
+      properties:
+        name:
+          type: string
+          example: "Head"
+          default: "Head"
+        note:
+          type: string
+          example: "Headache"
+          default: "Headache"
+        description:
+          $ref: '#/components/schemas/Description'
+
+    WorkingDayBase:
+      type: object
+      required: [date, times]
+      properties:
+        date:
+          $ref: '#/components/schemas/Date'
+        times:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+    WorkingDayCreate:
+      allOf:
+        - $ref: '#/components/schemas/WorkingDayBase'
+      type: object
+      required: [packageId]
+      properties:
+        packageId:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    WorkingDayUpdateWithID:
+      allOf:
+        - $ref: '#/components/schemas/WorkingDayBase'
+      type: object
+      required: [id]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    WorkingDayBasic:
+      allOf:
+        - $ref: '#/components/schemas/WorkingDayBase'
+      type: object
+      required: [id]
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        description:
+          $ref: '#/components/schemas/Description'
+    WorkingDayDetail:
+      allOf:
+        - $ref: '#/components/schemas/WorkingDayBasic'
+    WorkingTimeDetail:
+      type: object
+      required: [begin, end]
+      properties:
+        begin:
+          $ref: '#/components/schemas/DateTime'
+        end:
+          $ref: '#/components/schemas/DateTime'
+        packageId:
+          $ref: '#/components/schemas/Number'
+        scheduleId:
+          $ref: '#/components/schemas/Number'
+        workingDayId:
+          $ref: '#/components/schemas/Number'
+        visitTime:
+          $ref: '#/components/schemas/Number'

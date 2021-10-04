@@ -1,0 +1,64 @@
+HỆ THỐNG KHÁM BỆNH CỘNG ĐỒNG
+
+I/ Gồm các thành phần
+    + Hệ thống quản lý trung tâm (system)
+    + Bệnh viện/ phòng khám (clinic)
+    + Bệnh nhân (patient)
+    + Nhà thuốc (pharmacy)
+
+II/ Tài khoản
+    + Để điều khiển các thành phần nêu ở mục I, chúng ta phải có các tài khoản quản lý (management account) để thêm, xoá, cập nhật, và quản lý thông tin
+    + Ngoài ra còn có các tài khoản cho user như account bác sĩ, account bệnh nhân
+    + Tất cả các account đều có các chức năng cơ bản như: login, change password, forgot password + reset password
+
+III/ System
+    + Bao gồm các account để quản lý thông tin các clinic, pharmacy và các patient
+    + Có 2 loại account quản lý sau
+    1/ Admin (Super Account)
+        + Create/deactivate account normal 
+        + Create/deactivate đươc clinic và clinic admin account 
+        + Edit thông tin cơ bản của clinic
+        + Thực hiện được các quyền của account normal
+    2/ Normal
+        + Theo dõi được số lượng các appointment và income của clinic
+        + Create/Edit/deactivate patient
+        + Xữ lý các review giữa bệnh nhân và bác sĩ
+        + Cập nhật các mã code giảm giá, tạo các event cho toàn bộ hệ thống
+        + .....
+
+IV/ Clinic
+    1/ Bao gồm các thành phần sau:
+        + Account quản lý
+        + Các chuyên khoa (Specialty)
+        + Bác sĩ (Doctor)
+        + Gói khám bệnh (Package)
+        + Các cuộc khám bệnh (Appointment)
+    2/ Account quản lý
+        Có 2 loại account quản lý
+        a/ Admin
+            + Edit các thông tin cơ bản của clinic 
+            + Create/edit/deactivate các chuyên khoa bao gồm tên, hình ảnh ...
+            + Create/edit/deactivate các doctor bao gồm thông tin cơ bản của doctor, chứng chỉ hành nghề, bằng cấp, hình ảnh
+            + Create/edit/deactivate các gói khám bệnh của từng chuyên khoa và theo từng doctor (nếu cần). Một gói khám bệnh sẽ gồm giá tiền và thời gian khám (nếu là telemedicin)
+            + Create/deactivate account normal của clinic
+            + Thực hiện được các quyền của account normal
+        b/ Normal
+            + Accept hay reject các appointment mà bệnh nhân đặt cho doctor của clinic mình 
+            + Thống kê theo dõi được các appointment và income của clinic và của từng bác sĩ
+            + Thống kê các đánh giá của bệnh nhân đối với doctor, clinic của mình
+            + Tạo các mã giảm giá, các event cho clinic, và cho từng bệnh nhân
+            + Đánh giá bệnh nhân
+            + .....
+    3/ Account bác sĩ
+        + Xem danh sách các appointment trong ngày, trong tháng
+        + Cập nhật thông tin chẩn đoán bệnh vào hệ thống sau mỗi cuộc hẹn
+        + Theo dõi được các appointment và income của mình 
+        + Đánh giá bệnh nhân
+
+V/ Patient
+    + Là account dành cho bệnh nhân
+    + Tìm kiếm bác sĩ theo chuyên khoa minh mong muốn khám và đăt lịch khám bệnh (appointment)
+    + Xem danh sách các appointment của mình - bao gồm có or không có kết quả chẩn đoán của bác sĩ (cần thảo luận thêm)
+    + Đánh giá các bác sĩ 
+    
+

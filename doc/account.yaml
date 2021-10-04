@@ -1,0 +1,563 @@
+openapi: 3.0.1
+info:
+  title: account api
+  description: account api
+  version: 1.0.0
+servers:
+- url: https://cloud273.com/mcs/api
+paths:
+  /{account}/register:
+    post:
+      tags:
+      - Registration
+      summary: Register
+      operationId: register
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: language
+        in: header
+        description: Language
+        required: true
+        schema:
+          type: string
+          default: vi
+          enum: [vi, en]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - username
+              - password
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/Username'
+                password:
+                  $ref: '#/components/schemas/Password'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/Message'
+        400:
+          description: Bad request
+        409:
+          description: Existed
+        500:
+          description: Unknown
+  /{account}/activate-request:
+    patch:
+      tags:
+      - Registration
+      summary: Activate request
+      operationId: activateRequest
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: language
+        in: header
+        description: Language
+        required: true
+        schema:
+          type: string
+          default: vi
+          enum: [vi, en]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - username
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/Username'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/Message'
+        400:
+          description: Bad request
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /{account}/activate:
+    patch:
+      tags:
+      - Registration
+      summary: Activate
+      operationId: activate
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [username, code]
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/Username'
+                code:
+                  $ref: '#/components/schemas/Code'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          description: Bad request
+        403:
+          description: Invalid code
+        404:
+          description: Not found
+        406:
+          description: Expired code
+        500:
+          description: Unknown
+  /{account}/login:
+    post:
+      tags:
+      - Login
+      summary: Login
+      operationId: login
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [login, device]
+              type: object
+              properties:
+                login:
+                  type: object
+                  properties:
+                    username:
+                      $ref: '#/components/schemas/Username'
+                    password:
+                      $ref: '#/components/schemas/Password'
+                device:
+                  $ref: '#/components/schemas/Device'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        202:
+          description: Success, need to create account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        400:
+          description: Bad request
+        401:
+          description: Invalid password
+        403:
+          description: Inactived
+        404:
+          description: Not found
+        423:
+          description: Account is locked
+        500:
+          description: Unknown
+  /{account}/update-password:
+    patch:
+      tags:
+      - Password
+      summary: Update password
+      operationId: updatePassword
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [password, newPassword]
+              type: object
+              properties:
+                password:
+                  $ref: '#/components/schemas/Password'
+                newPassword:
+                  $ref: '#/components/schemas/Password'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        403:
+          description: Expired Token
+        404:
+          description: Invalid password
+        500:
+          description: Unknown
+  /{account}/reset-password-request:
+    patch:
+      tags:
+      - Password
+      summary: Reset password request (Forgot password)
+      operationId: resetPasswordRequest
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: language
+        in: header
+        description: Language
+        required: true
+        schema:
+          type: string
+          default: vi
+          enum: [vi, en]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [username]
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/Username'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/Message'
+        404:
+          description: Not found
+        500:
+          description: Unknown
+  /{account}/reset-password:
+    patch:
+      tags:
+      - Password
+      summary: Reset password
+      operationId: resetPassword
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: [code, password, username]
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/Username'
+                password:
+                  $ref: '#/components/schemas/Password'
+                code:
+                  $ref: '#/components/schemas/Code'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        403:
+          description: Invalid code
+        404:
+          description: Not found
+        406:
+          description: Expired code
+        500:
+          description: Unknown
+  /{account}/device:
+    post:
+      tags:
+      - Device
+      summary: Save device
+      operationId: savePassword
+      parameters:
+      - name: account
+        in: path
+        description: account
+        required: true
+        schema:
+          type: string
+          default: patient
+      - name: os
+        in: header
+        description: Device OS
+        required: true
+        schema:
+          type: string
+          default: ios
+      - name: app
+        in: header
+        description: Application Identifier
+        required: true
+        schema:
+          type: string
+          default: "com.cloud273.patient|1.0.0"
+      - name: token
+        in: header
+        description: Access token
+        required: true
+        schema:
+          type: string
+          default: "patient_token_here"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+        403:
+          description: Expired Token
+        404:
+          description: Not found
+        500:
+          description: Unknown
+components:
+  schemas:
+    Username:
+      maxLength: 128
+      type: string
+      example: "patient@mailinator.com"
+      default: "patient@mailinator.com"
+      description: Email or mobile phone
+    Password:
+      maxLength: 128
+      minLength: 6
+      type: string
+      example: "111111"
+      default: "111111"
+      description: Password
+    Code:
+      maxLength: 8
+      type: string
+      example: "123456"
+      default: "123456"
+      description: Code used to activate or reset password
+    Message:
+      type: string
+      enum: [sms, email]
+    Device:
+      type: object
+      required: [info, os, type, production, topic]
+      properties:
+        info:
+          type: string
+          example: "iphone 6 plus/Ios 13"
+          default: "iphone 6 plus/Ios 13"
+        token:
+          type: string
+          example: "device_token"
+          default: "device_token"        
+        os:
+          type: string
+          enum: [ios, android, chrome]
+          example: "ios"
+          default: "ios"
+        topic:
+          type: string
+          enum: [com.cloud273.patient, com.cloud273.doctor, com.cloud273.clinic, com.cloud273.admin, com.cloud273.pharmacy]
+          example: "com.cloud273.patient"
+          default: "com.cloud273.patient"
+        production:
+          type: boolean
+          example: true
+          default: true
+      
