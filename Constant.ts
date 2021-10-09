@@ -3,6 +3,7 @@
 import Path = require('path');
 
 export const Constant = {
+    initDatabase: false,
     host: {
         ssl: true,
         base: "mcs.cloud273.com",

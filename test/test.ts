@@ -22,7 +22,7 @@ export class Test {
     public static async test() {
         const Fs = require('fs');
         const Path = require('path');
-        const test = JSON.parse(Fs.readFileSync(Path.join(__dirname, 'resource/config/test.json'), 'utf8'))
+        const test = JSON.parse(Fs.readFileSync(Path.join(__dirname, './sample.json'), 'utf8'))
         console.log(test)
     }
 
@@ -69,7 +69,18 @@ export class Test {
             }
             const issuerDate = new Date().addSecond(-3600 * 24 * (365 + (Integer.Random(0, 7300))))
             const certName = `${name} working certificate`
-            const certId = await TestAdmin.createClinicCert(adminToken, clinicId, `1000${i}`, certName, 'Ministry of health', issuerDate, undefined, `clinic_cert_${i}.jpg`, ClinicCertType.working, `Description for ${certName}`)
+            const certId = await TestAdmin.createClinicCert(
+                adminToken, 
+                clinicId, 
+                `1000${i}`, 
+                certName, 
+                'Ministry of health', 
+                issuerDate, 
+                undefined, 
+                `clinic_cert_${i}.jpg`, 
+                ClinicCertType.working, 
+                `Description for ${certName}`
+                )
             if (certId == undefined) {
                 return
             }
@@ -82,25 +93,71 @@ export class Test {
                 const dob = new Date().addSecond(-3600 * 24 * (365 * 35 + (Integer.Random(0, 7300))))
                 const startWork = new Date().addSecond(-3600 * 24 * (365 * 5 + (Integer.Random(0, 3650))))
                 const desc = `Description for ${name}`
-                let doctorId = await TestAdmin.createDoctor(adminToken, clinicId, `doctor${char}${j}@mailinator.com`.toLowerCase() , '111111', Language.vi, `doctor_${doctorCount}.jpg`, name, '', gender, dob, specialties, 'Dr', 'CEO', `Biography of ${name}`, startWork, '+07:00', desc)
+                let doctorId = await TestAdmin.createDoctor(
+                    adminToken, 
+                    clinicId, 
+                    `doctor${char}${j}@mailinator.com`.toLowerCase() , 
+                    '111111', 
+                    Language.vi, 
+                    `doctor_${doctorCount}.jpg`, 
+                    name, 
+                    '', 
+                    gender, 
+                    dob, 
+                    specialties, 
+                    'Dr', 
+                    'CEO', 
+                    `Biography of ${name}`, 
+                    startWork, 
+                    '+07:00', desc
+                    )
                 if (doctorId == undefined) {
                     return
                 }
                 const issuerDate = new Date().addSecond(-3600 * 24 * (365 + (Integer.Random(0, 7300))))
                 const certName = `${name} working certificate`
-                const certId = await TestAdmin.createDoctorCert(adminToken, doctorId, `1000${i}`, certName, 'Department of health Sai Gon', issuerDate, undefined, `doctor_cert_${doctorCount}.jpg`, DoctorCertType.working, `Description for ${certName}`)
+                const certId = await TestAdmin.createDoctorCert(
+                    adminToken, 
+                    doctorId, 
+                    `1000${i}`, 
+                    certName, 
+                    'Department of health Sai Gon', 
+                    issuerDate, 
+                    undefined, 
+                    `doctor_cert_${doctorCount}.jpg`, 
+                    DoctorCertType.working, 
+                    `Description for ${certName}`
+                    )
                 if (certId == undefined) {
                     return
                 }
                 for (const specialty of specialties) {
-                    const packageId = await TestAdmin.createPackage(adminToken, doctorId, specialty, PackageType.classic, 50000 * Integer.Random(1, 10), CurrencyUnit.vnd, 300 * Integer.Random(1, 3), `Description for package`)
+                    const packageId = await TestAdmin.createPackage(
+                        adminToken, 
+                        doctorId, 
+                        specialty, 
+                        PackageType.classic, 
+                        50000 * Integer.Random(1, 10), 
+                        CurrencyUnit.vnd, 
+                        300 * Integer.Random(1, 3), 
+                        `Description for package`
+                        )
                     if (packageId == undefined) {
                         return
                     }
                     const duration = this.dateRange(new Date(), new Date().addSecond (3600 * 24 * 365))
-                    const morning = this.timeRange(new Date(2000, 1, 1, Integer.Random(7, 8), 30 * Integer.Random(0, 1), 0, 0), new Date(2000, 1, 1, Integer.Random(11, 12), 30 * Integer.Random(0, 1), 0, 0) )
-                    const afternoon = this.timeRange(new Date(2000, 1, 1, Integer.Random(13, 14), 30 * Integer.Random(0, 1), 0, 0), new Date(2000, 1, 1, Integer.Random(16, 17), 30 * Integer.Random(0, 1), 0, 0) )
-                    const evening = this.timeRange(new Date(2000, 1, 1, 18, 30 * Integer.Random(0, 1), 0, 0), new Date(2000, 1, 1, Integer.Random(20, 21), 30 * Integer.Random(0, 1), 0, 0))
+                    const morning = this.timeRange(
+                        new Date(2000, 1, 1, Integer.Random(7, 8), 30 * Integer.Random(0, 1), 0, 0), 
+                        new Date(2000, 1, 1, Integer.Random(11, 12), 30 * Integer.Random(0, 1), 0, 0) 
+                        )
+                    const afternoon = this.timeRange(
+                        new Date(2000, 1, 1, Integer.Random(13, 14), 30 * Integer.Random(0, 1), 0, 0), 
+                        new Date(2000, 1, 1, Integer.Random(16, 17), 30 * Integer.Random(0, 1), 0, 0) 
+                        )
+                    const evening = this.timeRange(
+                        new Date(2000, 1, 1, 18, 30 * Integer.Random(0, 1), 0, 0), 
+                        new Date(2000, 1, 1, Integer.Random(20, 21), 30 * Integer.Random(0, 1), 0, 0)
+                        )
                     let tRanges: TimeRange[][] = []
                     for (var k = 0; k < 7; k++) {
                         const rand = Integer.Random(0,7)
@@ -120,7 +177,19 @@ export class Test {
                             tRanges.push([])
                         } 
                     }
-                    const scheduleId = await TestAdmin.createSchedule(adminToken, packageId, duration, tRanges[0], tRanges[1], tRanges[2], tRanges[3], tRanges[4], tRanges[5], tRanges[6], 'Description of schedule')
+                    const scheduleId = await TestAdmin.createSchedule(
+                        adminToken, 
+                        packageId, 
+                        duration, 
+                        tRanges[0], 
+                        tRanges[1], 
+                        tRanges[2], 
+                        tRanges[3], 
+                        tRanges[4], 
+                        tRanges[5], 
+                        tRanges[6], 
+                        'Description of schedule'
+                        )
                     if (scheduleId == undefined) {
                         return
                     }
@@ -185,7 +254,23 @@ class TestAdmin {
         return response.data.token
     }
 
-    static async createClinic(token: string, name: string, email: string, phone: string, workPhone: string, country: string, state: string, city: string, line: string, long: number, lait: number, image: string, description: string | undefined, language: Language, password: string): Promise<number> {
+    static async createClinic(
+        token: string, 
+        name: string, 
+        email: string, 
+        phone: string, 
+        workPhone: string, 
+        country: string, 
+        state: string, 
+        city: string, 
+        line: string, 
+        long: number, 
+        lait: number, 
+        image: string, 
+        description: string | undefined, 
+        language: Language, 
+        password: string
+        ): Promise<number> {
         const address = new Address()
         address.country = country
         address.state = state
@@ -217,7 +302,18 @@ class TestAdmin {
         return response.data.id
     }
 
-    static async createClinicCert(token: string, clinicId: number, code: string, name: string, issuer: string, issueDate: Date, expDate: Date | undefined, image: string, type: ClinicCertType, description: string | undefined): Promise<number> {
+    static async createClinicCert(
+        token: string, 
+        clinicId: number, 
+        code: string, 
+        name: string, 
+        issuer: string, 
+        issueDate: Date, 
+        expDate: Date | undefined, 
+        image: string, 
+        type: ClinicCertType, 
+        description: string | undefined
+        ): Promise<number> {
         const obj = new ClinicCert()
         obj.clinicId = clinicId
         obj.code = code
@@ -234,7 +330,25 @@ class TestAdmin {
         return response.data.id
     }
 
-    static async createDoctor(token: string, clinicId: number, username: string, password: string, language: Language, image: string, firstname: string, lastname: string, gender: GenderType, dob: Date, specialties: string[], title: string, office: string, biography: string, startWork: Date, timezone: string, description: string | undefined): Promise<number> {
+    static async createDoctor(
+        token: string, 
+        clinicId: number, 
+        username: string, 
+        password: string, 
+        language: Language, 
+        image: string, 
+        firstname: string, 
+        lastname: string, 
+        gender: GenderType, 
+        dob: Date, 
+        specialties: string[], 
+        title: string, 
+        office: string, 
+        biography: string, 
+        startWork: Date, 
+        timezone: string, 
+        description: string | undefined
+        ): Promise<number> {
         const profile = new Profile()
         profile.firstname = firstname
         profile.lastname = lastname
@@ -262,7 +376,18 @@ class TestAdmin {
         return response.data.id
     }
 
-    static async createDoctorCert(token: string, doctorId: number, code: string, name: string, issuer: string, issueDate: Date, expDate: Date | undefined, image: string, type: DoctorCertType, description: string | undefined): Promise<number> {
+    static async createDoctorCert(
+        token: string, 
+        doctorId: number, 
+        code: string, 
+        name: string, 
+        issuer: string, 
+        issueDate: Date, 
+        expDate: Date | undefined, 
+        image: string, 
+        type: DoctorCertType, 
+        description: string | undefined
+        ): Promise<number> {
         const obj = new DoctorCert()
         obj.doctorId = doctorId
         obj.code = code
@@ -279,7 +404,16 @@ class TestAdmin {
         return response.data.id
     }
 
-    static async createPackage(token: string, doctorId: number, specialty: string, type: PackageType, amount: number, currency: CurrencyUnit, visitTime: number, description: string | undefined): Promise<number> {
+    static async createPackage(
+        token: string, 
+        doctorId: number, 
+        specialty: string, 
+        type: PackageType, 
+        amount: number, 
+        currency: CurrencyUnit, 
+        visitTime: number, 
+        description: string | undefined
+        ): Promise<number> {
         const price = new Price()
         price.amount = amount
         price.currency = currency
@@ -296,7 +430,19 @@ class TestAdmin {
         return response.data.id
     }
 
-    static async createSchedule(token: string, packageId: number, duration: DateRange, monday: TimeRange[], tuesday: TimeRange[], wednesday: TimeRange[], thursday: TimeRange[], friday: TimeRange[], saturday: TimeRange[], sunday: TimeRange[], description: string | undefined): Promise<number> {
+    static async createSchedule(
+        token: string, 
+        packageId: number, 
+        duration: DateRange, 
+        monday: TimeRange[], 
+        tuesday: TimeRange[], 
+        wednesday: TimeRange[], 
+        thursday: TimeRange[], 
+        friday: TimeRange[], 
+        saturday: TimeRange[], 
+        sunday: TimeRange[], 
+        description: string | undefined
+        ): Promise<number> {
         const obj = new Schedule()
         obj.packageId = packageId
         obj.duration = duration
@@ -318,7 +464,7 @@ class TestAdmin {
 
 class TestRequest {
 
-    private static host = 'http://localhost:' + Constant.host.port + '/mcs/api'
+    private static host = 'http://localhost:' + Constant.host.port + Constant.api.url
 
     static async request(endPoint: string, method: string, headers: {} | null, qs: {} | null, body: {} | null) : Promise<ApiResponse> {
         const uri = this.host + endPoint

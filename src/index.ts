@@ -70,7 +70,7 @@ createConnection().then(async () => {
         }
     })
 
-    if (Constant.host.ssl) {
+    if (Constant.host.ssl && !Constant.initDatabase) {
         // Load ssl
         const options = {
             key: fs.readFileSync(Constant.key.domain.key),
@@ -98,8 +98,9 @@ createConnection().then(async () => {
     // Start service
     ScheduleService.instance.start()
 
-    // Initlize DB for test
-    // await Test.createDb()
+    if (Constant.initDatabase) {
+        await Test.createDb()
+    }
 
     // Log success
     Log.message("Startup success", new Date().string())
