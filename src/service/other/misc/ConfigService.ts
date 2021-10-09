@@ -1,4 +1,4 @@
-import { Constant, HostEndpoint } from "../../../../Constant";
+import { Constant } from "../../../../Constant";
 import { SupportSpecialties } from "../../../resource/config/SupportSpecialties";
 import { SupportReasons } from "../../../resource/config/SupportReasons";
 import { SupportCountries } from "../../../resource/config/SupportCountries";

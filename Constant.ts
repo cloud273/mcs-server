@@ -3,7 +3,6 @@
 import Path = require('path');
 
 export const Constant = {
-    test: false,
     host: {
         ssl: true,
         base: "mcs.cloud273.com",
@@ -78,8 +77,4 @@ export const Constant = {
         beginableEnd: 3600*12,
         finishableEnd: 3600*12
     }
-}
-
-export function HostEndpoint(): string {
-    return (Constant.host.ssl ? 'https://' : 'http://') + Constant.host.base
 }
