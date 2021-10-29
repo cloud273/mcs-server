@@ -131,7 +131,7 @@ export class PatientAppointmentService {
                 if (obj.isCancelable) {
                     const success = await AppointmentService.updateStatusActivatedAppointment(id, UserType.patient, StatusType.cancelled, note)
                     if (success) {
-                        NotifyService.appointmentCancelledByPatient(id, note)
+                        NotifyService.appointmentCancelledByPatient(id, note, obj.status.value == StatusType.accepted)
                         return Result.success()   
                     } else {
                         return Result.notFound()

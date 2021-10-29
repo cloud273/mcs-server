@@ -35,7 +35,7 @@ export class ClinicAppointmentService {
                 if (obj.isAcceptable) {
                     const success = await AppointmentService.updateStatusActivatedAppointment(id, UserType.clinic, StatusType.accepted, note)
                     if (success) {
-                        NotifyService.appointmentRejectedByClinic(id, note)
+                        NotifyService.appointmentAcceptedByClinic(id, note)
                         return Result.success()   
                     } else {
                         return Result.notFound()

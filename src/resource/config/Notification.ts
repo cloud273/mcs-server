@@ -54,25 +54,33 @@ export const Notification = {
                     "en": "Appointment cancelled by patient",
                     "vi": "Cuộc hẹn bị huỷ bởi bệnh nhân"
                 },
+                acceptedByClinic: {
+                    "en": "Appointment accepted by clinic",
+                    "vi": "Cuộc hẹn được chấp nhận bởi phòng khám"
+                },
                 rejectedBySystem: {
                     "en": "Appointment rejected by system",
                     "vi": "Cuộc hẹn bị huỷ bởi hệ thống"
                 },
                 rejectedByClinic: {
                     "en": "Appointment rejected by clinic",
-                    "vi": "Cuộc hẹn bị huỷ bởi phòng khám/ bênh viện"
+                    "vi": "Cuộc hẹn bị huỷ bởi phòng khám"
                 }
             }
         },
         patient: {
             appointment: {
+                acceptedByClinic: {
+                    "en": "Appointment accepted by clinic",
+                    "vi": "Cuộc hẹn được chấp nhận bởi phòng khám"
+                },
                 rejectedBySystem: {
                     "en": "Appointment rejected by system",
                     "vi": "Cuộc hẹn bị huỷ bởi hệ thống"
                 },
                 rejectedByClinic: {
                     "en": "Appointment rejected by clinic",
-                    "vi": "Cuộc hẹn bị huỷ bởi phòng khám/ bênh viện"
+                    "vi": "Cuộc hẹn bị huỷ bởi phòng khám"
                 },
                 begunByDoctor: {
                     "en": "Appointment is begun",
