@@ -27,7 +27,7 @@ export class FormRequest {
                     if (error == null) {
                         result = new FormRequest(request, files, fields) 
                     } 
-                    resolve()
+                    resolve(result)
                 });
             });
         } 
