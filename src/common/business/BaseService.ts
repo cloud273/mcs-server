@@ -1,6 +1,6 @@
 import { ObjectType, EntityManager, getManager } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
-import { Base, sDeactivated, sBasic } from "../entity/Base";
+import { Base } from "../entity/Base";
 import { Result } from "../object/Result";
 import { EmptyEntityService } from "./basic/EmptyEntityService";
 import { EmptyEntityRepository } from "./basic/EmptyEntityRepository";

@@ -8,7 +8,6 @@ import { Length, ValidateNested, MaxLength, IsNotEmpty, IsOptional } from "class
 import { IsEmail } from "../../support/validator/EmailValidator";
 import { IsPhone } from "../../support/validator/PhoneValidator";
 import { Type } from "class-transformer";
-import { LocalizeString } from "../../common/entity/LocalizeString";
 
 @Entity()
 export class Clinic extends Organization {

@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from "typeorm";
 import { Base, Select, sBasic, sDetail } from "../../common/entity/Base";
 import { Appointment } from "./Appointment";
-import { IsEnum, IsPositive, IsOptional, MaxLength } from "class-validator";
+import { IsEnum, IsPositive } from "class-validator";
 import { StatusType, UserType } from "../../common/object/Enum";
 import { Status } from "../../common/entity/Status";
 
